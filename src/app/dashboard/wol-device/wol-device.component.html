@@ -15,10 +15,14 @@
                     <i class="material-icons-outlined">call_to_action</i>
                 </button>
 
-                <button [disabled]="isOnline" class="d-inline-flex justify-content-center btn shadow-sm" [ngClass]="(isOnline) ? 'btn-secondary' : 'btn-primary'">
-                    <i class="material-icons">power_settings_new</i>
+                <button [disabled]="isOnline || isPending" class="d-inline-flex justify-content-center btn shadow-sm" [ngClass]="(isOffline) ? 'btn-primary' : 'btn-secondary'">
+                    <i *ngIf="isOffline || isOnline; else spinner" class="material-icons">power_settings_new</i>
                 </button>
             </div>
         </div>
     </div>
 </div>
+
+<ng-template #spinner>
+    <div class="spinner-border spinner-border-sm" role="status"></div>
+</ng-template>

@@ -15,7 +15,7 @@ export class WolDeviceComponent implements OnInit {
   }
 
   get statusCss(): string {
-    switch(this.wolDevice.status) {
+    switch (this.wolDevice.status) {
       case 'online': return 'bg-success';
       case 'pending': return 'bg-warning';
       case 'offline': return 'bg-danger';
@@ -25,5 +25,13 @@ export class WolDeviceComponent implements OnInit {
 
   get isOnline(): boolean {
     return this.wolDevice.status === 'online';
+  }
+
+  get isPending(): boolean {
+    return this.wolDevice.status === 'pending';
+  }
+
+  get isOffline(): boolean {
+    return this.wolDevice.status === 'offline';
   }
 }
