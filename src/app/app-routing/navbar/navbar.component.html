@@ -1,0 +1,19 @@
+<nav *ngIf="showNavbar" class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" routerLink="/">{{ navbarBrand }}</a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false">
+        <i class="material-icons">menu</i>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item">
+                <a routerLink="/" class="nav-link">Home</a>
+            </li>
+
+            <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item">
+                <a routerLink="/login" class="nav-link">Login</a>
+            </li>
+        </ul>
+    </div>
+</nav>

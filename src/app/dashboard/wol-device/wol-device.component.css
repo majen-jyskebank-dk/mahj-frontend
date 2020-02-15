@@ -1,0 +1,14 @@
+.status-sphere {
+    height: 64px;
+    width: 64px;
+    border-radius: 32px; 
+}
+
+.btn {
+    width: 64px;
+    height: 64px;
+}
+
+.btn-secondary {
+    cursor: default;
+}

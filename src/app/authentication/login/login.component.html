@@ -1,0 +1,27 @@
+<div class="row align-items-center h-100">
+    <div class="col-6 mx-auto">
+        <div class="card h-100 justify-content-center">
+            <div class="card-body">
+                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="material-icons">person</i></span>
+                        </div>
+                        <input type="text" class="form-control" formControlName="username" name="username" placeholder="Username" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+                    </div>
+        
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="material-icons">lock</i></span>
+                        </div>
+                        <input type="password" class="form-control" formControlName="password" name="password" placeholder="Password" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+                    </div>
+        
+                    <button [disabled]="loading" type="submit" [ngClass]="(!loading) ? 'btn-primary' : 'btn-secondary'" class="btn btn-block">Sign in</button>
+                </form>
+            </div>
+        </div>
+
+        <app-alert [margin]='"mt-3"'></app-alert>
+    </div>
+</div>
