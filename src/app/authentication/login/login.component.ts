@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
 import { AlertService } from 'src/app/shared/alert/alert.service';
 import { first } from 'rxjs/operators';
@@ -14,9 +14,11 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loading = false;
   submitted = false;
+  returnUrl: string;
 
   constructor(
     private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
     private router: Router,
     private authenticationSerivce: AuthenticationService,
     private alertService: AlertService
@@ -24,6 +26,8 @@ export class LoginComponent implements OnInit {
     if (this.authenticationSerivce.currentUserValue) {
       this.router.navigate(['/']);
     }
+
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
   get f() { return this.loginForm.controls; }
@@ -36,6 +40,8 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
+    console.log('HIT1');
+
     this.submitted = true;
     this.alertService.clear();
 
@@ -44,16 +50,30 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
+    
+    this.authenticationSerivce.login(this.f.username.value, this.f.password.value)
+      .pipe(first())
+      .subscribe({
+        next(data) {
+          console.log(data);
+        },
+        error(err) {
+          console.error('Caught error', err);
+        }
+      });
+
+    /*
     this.authenticationSerivce.login(this.f.username.value, this.f.password.value)
       .pipe(first())
       .subscribe(
         data => {
-          this.router.navigate(['/']);
+          console.log('HIT3');
+          this.router.navigate([this.returnUrl]);
         },
         error => {
           this.alertService.error(error);
           this.loading = false;
-        }
-      );
+        });
+    */
   }
 }

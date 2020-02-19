@@ -22,12 +22,17 @@ export class AuthenticationService {
   }
 
   login(username: string, password: string) {
-    return this.http.post<any>(`${environment.apiUrl}/users/authenticate`, { username, password })
-      .pipe(map(user => {
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        this.currentUserSubject.next(user);
-        return user;
-      }));
+    try {
+      return this.http.post<any>(`${environment.apiUrl}/authentication/login`, { username, password })
+        .pipe(map(user => {
+          console.table(user);
+          localStorage.setItem('currentUser', JSON.stringify(user));
+          this.currentUserSubject.next(user);
+          return user;
+        }));
+    } catch (err) {
+      console.error('caught err: ', err);
+    }
   }
 
   logout() {

@@ -39,7 +39,6 @@ export class AlertService {
 
   private constructAlert(message: string, type: string, keepAfterRouteChange: boolean) {
     this.keepAfterRouteChange = keepAfterRouteChange;
-    console.log('Pushing alert');
     this.subject.next({ type, text: message });
   }
 }

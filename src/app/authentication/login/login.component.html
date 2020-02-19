@@ -17,7 +17,10 @@
                         <input type="password" class="form-control" formControlName="password" name="password" placeholder="Password" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
                     </div>
         
-                    <button [disabled]="loading" type="submit" [ngClass]="(!loading) ? 'btn-primary' : 'btn-secondary'" class="btn btn-block">Sign in</button>
+                    <button [disabled]="loading" [ngClass]="(!loading) ? 'btn-primary' : 'btn-secondary'" class="btn btn-block">
+                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                        Sign in
+                    </button>
                 </form>
             </div>
         </div>

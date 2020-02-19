@@ -4,10 +4,10 @@
 
 export const environment = {
   production: false,
-  enableDebug: true,
+  enableDebug: false,
   appTitle: 'MAHJ',
   appBrand: 'MAHJ',
-  apiUrl: 'http://localhost:8080/api'
+  apiUrl: 'http://localhost:4300/api'
 };
 
 /*
