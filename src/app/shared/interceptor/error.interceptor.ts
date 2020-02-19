@@ -10,16 +10,22 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(catchError(err => {
-            console.log('Caught error');
+            let error;
 
-            if (err.status === 401) {
-                this.authenticationService.logout();
-                location.reload();
+            switch (err.status) {
+                case 400: // Bad username/password
+                    error = 'Incorrect username or password';
+                    break;
+                case 401: // Not authorized
+                    this.authenticationService.logout();
+                    location.reload();
+                    error = 'Unautorized';
+                    break;
+                default:
+                    error = err.error.message || err.statusText;
+                    break;
             }
 
-            const error = err.error.message || err.statusText;
-
-            console.log('Throwing error');
             return throwError(error);
         }));
     }

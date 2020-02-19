@@ -36,12 +36,12 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
-    });
+  });
+
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
-  onSubmit(): void {
-    console.log('HIT1');
-
+  async onSubmit() {
     this.submitted = true;
     this.alertService.clear();
 
@@ -50,30 +50,16 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
-    
-    this.authenticationSerivce.login(this.f.username.value, this.f.password.value)
-      .pipe(first())
-      .subscribe({
-        next(data) {
-          console.log(data);
-        },
-        error(err) {
-          console.error('Caught error', err);
-        }
-      });
-
-    /*
     this.authenticationSerivce.login(this.f.username.value, this.f.password.value)
       .pipe(first())
       .subscribe(
         data => {
-          console.log('HIT3');
+          console.log(data);
           this.router.navigate([this.returnUrl]);
         },
         error => {
           this.alertService.error(error);
           this.loading = false;
         });
-    */
   }
 }

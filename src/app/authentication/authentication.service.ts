@@ -24,11 +24,11 @@ export class AuthenticationService {
   login(username: string, password: string) {
     try {
       return this.http.post<any>(`${environment.apiUrl}/authentication/login`, { username, password })
-        .pipe(map(user => {
-          console.table(user);
-          localStorage.setItem('currentUser', JSON.stringify(user));
-          this.currentUserSubject.next(user);
-          return user;
+        .pipe(map(request => {
+          console.table(request);
+          localStorage.setItem('currentUser', JSON.stringify(request.response));
+          this.currentUserSubject.next(request);
+          return request;
         }));
     } catch (err) {
       console.error('caught err: ', err);
