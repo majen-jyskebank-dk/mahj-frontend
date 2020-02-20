@@ -12,7 +12,7 @@
             </li>
 
             <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item">
-                <a routerLink="/login" class="nav-link">Login</a>
+                <a routerLink="/login" (click)="clickLogout()" class="nav-link">Logout</a>
             </li>
         </ul>
     </div>
