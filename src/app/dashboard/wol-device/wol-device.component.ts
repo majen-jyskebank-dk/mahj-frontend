@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { WolDevice } from './wol-device.model';
+import { WolDeviceService } from './wol-device.service';
 
 @Component({
   selector: 'app-wol-device',
@@ -9,9 +10,10 @@ import { WolDevice } from './wol-device.model';
 export class WolDeviceComponent implements OnInit {
   @Input() wolDevice: WolDevice;
 
-  constructor() { }
+  constructor(private wolDeviceService: WolDeviceService) { }
 
   ngOnInit(): void {
+    //    this.wolDevice.status = this.wolDeviceService.wolDeviceStatus;
   }
 
   get statusCss(): string {

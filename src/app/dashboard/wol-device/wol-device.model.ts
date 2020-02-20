@@ -1,5 +1,5 @@
 export class WolDevice {
-    id: string;
+    public id: string;
     name: string;
     localIp: string;
     icon: string;
