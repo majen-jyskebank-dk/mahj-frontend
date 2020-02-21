@@ -1,15 +1,17 @@
 export class WolDevice {
-    public id: string;
+    // tslint:disable-next-line:variable-name
+    _id: string;
     name: string;
-    localIp: string;
+    localIpAddress: string;
     icon: string;
     status: string;
     sshEnabled: boolean;
 
-    constructor(id: string, name: string, localIp: string, icon: string, status: string, sshEnabled: boolean) {
-        this.id = id;
+    // tslint:disable-next-line:variable-name
+    constructor(_id: string, name: string, localIpAddress: string, icon: string, status: string, sshEnabled: boolean) {
+        this._id = _id;
         this.name = name;
-        this.localIp = localIp;
+        this.localIpAddress = localIpAddress;
         this. icon = icon;
         this.status = status;
         this.sshEnabled = sshEnabled;

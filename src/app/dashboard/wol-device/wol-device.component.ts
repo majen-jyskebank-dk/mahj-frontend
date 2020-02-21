@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { WolDevice } from './wol-device.model';
-import { WolDeviceService } from './wol-device.service';
+import { Socket } from 'ngx-socket-io';
+import { AuthenticationService } from 'src/app/authentication/authentication.service';
 
 @Component({
   selector: 'app-wol-device',
@@ -10,10 +11,21 @@ import { WolDeviceService } from './wol-device.service';
 export class WolDeviceComponent implements OnInit {
   @Input() wolDevice: WolDevice;
 
-  constructor(private wolDeviceService: WolDeviceService) { }
+  constructor(private socket: Socket, private authenticationService: AuthenticationService) { }
 
   ngOnInit(): void {
-    //    this.wolDevice.status = this.wolDeviceService.wolDeviceStatus;
+    this.wolDevice.status = 'pending';
+
+    console.log(JSON.stringify(this.wolDevice));
+
+    this.socket.on('statusUpdate', (data: any) => {
+      if (data._id === this.wolDevice._id) {
+        console.log(`Received statusUpdate for ${this.wolDevice._id} with data: ${ JSON.stringify(data) }`);
+        this.wolDevice.status = data.isAwake ? 'online' : 'offline';
+      }
+    });
+
+    this.socket.emit('requestStatus', { token: this.authenticationService.currentUserValue, _id: this.wolDevice._id });
   }
 
   get statusCss(): string {

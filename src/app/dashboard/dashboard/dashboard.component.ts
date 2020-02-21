@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { WolDeviceService } from '../wol-device/wol-device.service';
 import { WolDevice } from '../wol-device/wol-device.model';
+import { WolDevicesService } from '../wol-device/wol-devices.service';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,18 +18,18 @@ export class DashboardComponent implements OnInit {
     new WolDevice('2', 'Server', '192.168.1.11', 'storage', 'offline', true)];
   */
 
-  constructor(private wolDeviceService: WolDeviceService) { }
+  constructor(private wolDevicesService: WolDevicesService) { }
 
   ngOnInit() {
-    this.wolDeviceService.wolDevices.subscribe(
-      wolDevices => {
-        this.wolDevices = wolDevices;
-      },
-      error => {
-        console.error(error);
-      }
-    );
+    console.log('Dashboard init');
+    this.wolDevicesService.wolDevices
+      .pipe(first())
+      .subscribe(
+        data => {
+          this.wolDevices = data;
+        }
+      );
   }
 
-  wakeWolDevice(_id: String) { }
+  wakeWolDevice(id: string) { }
 }

@@ -1,7 +1,8 @@
 .status-sphere {
     height: 64px;
     width: 64px;
-    border-radius: 32px; 
+    border-radius: 32px;
+    transition: background-color .25s ease-in;
 }
 
 .btn {
