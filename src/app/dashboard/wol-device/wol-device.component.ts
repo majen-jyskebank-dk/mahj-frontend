@@ -22,6 +22,11 @@ export class WolDeviceComponent implements OnInit {
       }
     });
 
+    this.socket.on('unauthorized', () => {
+      console.log('UNAUTHORIZED');
+      this.authenticationService.logout();
+    });
+
     this.socket.emit('requestStatus', { token: this.authenticationService.currentUserValue, _id: this.wolDevice._id });
   }
 
