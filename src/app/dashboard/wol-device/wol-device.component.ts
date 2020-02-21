@@ -16,11 +16,8 @@ export class WolDeviceComponent implements OnInit {
   ngOnInit(): void {
     this.wolDevice.status = 'pending';
 
-    console.log(JSON.stringify(this.wolDevice));
-
     this.socket.on('statusUpdate', (data: any) => {
       if (data._id === this.wolDevice._id) {
-        console.log(`Received statusUpdate for ${this.wolDevice._id} with data: ${ JSON.stringify(data) }`);
         this.wolDevice.status = data.isAwake ? 'online' : 'offline';
       }
     });
@@ -47,5 +44,10 @@ export class WolDeviceComponent implements OnInit {
 
   get isOffline(): boolean {
     return this.wolDevice.status === 'offline';
+  }
+
+  wakeWolDevice(): void {
+    this.wolDevice.status = 'pending';
+    this.socket.emit('wakeWolDevice', { token: this.authenticationService.currentUserValue, _id: this.wolDevice._id });
   }
 }

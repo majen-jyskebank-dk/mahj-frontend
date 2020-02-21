@@ -15,7 +15,7 @@
                     <i class="material-icons-outlined">call_to_action</i>
                 </button>
 
-                <button [disabled]="isOnline || isPending" class="d-inline-flex justify-content-center btn shadow-sm" [ngClass]="(isOffline) ? 'btn-primary' : 'btn-secondary'">
+                <button [disabled]="isOnline || isPending" class="d-inline-flex justify-content-center btn shadow-sm" [ngClass]="(isOffline) ? 'btn-primary' : 'btn-secondary'" (click)="wakeWolDevice()">
                     <i *ngIf="isOffline || isOnline; else spinner" class="material-icons">power_settings_new</i>
                 </button>
             </div>
