@@ -7,7 +7,8 @@ export const environment = {
   enableDebug: false,
   appTitle: 'MAHJ',
   appBrand: 'MAHJ',
-  apiUrl: 'http://localhost:4300/api'
+  apiUrl: 'http://localhost:4300/api',
+  pollTries: 25
 };
 
 /*

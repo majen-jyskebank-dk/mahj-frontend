@@ -13,11 +13,8 @@ export class WolDevicesService {
   constructor(private http: HttpClient) { }
 
   get wolDevices(): Observable<any> {
-    console.log('In get');
-
     return this.http.get<any>(`${ environment.apiUrl }/wolDevices`)
       .pipe(map((data) => {
-        console.log(JSON.stringify(data.response));
         return data.response;
       }));
   }

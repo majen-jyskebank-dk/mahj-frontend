@@ -2,6 +2,9 @@ import { Component, OnInit, Input } from '@angular/core';
 import { WolDevice } from './wol-device.model';
 import { Socket } from 'ngx-socket-io';
 import { AuthenticationService } from 'src/app/authentication/authentication.service';
+import { Observable } from 'rxjs';
+import { promise } from 'protractor';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-wol-device',
@@ -10,24 +13,27 @@ import { AuthenticationService } from 'src/app/authentication/authentication.ser
 })
 export class WolDeviceComponent implements OnInit {
   @Input() wolDevice: WolDevice;
+  // tslint:disable-next-line: variable-name
+  @Input() _socket: Observable<Socket>;
+  private socket: Socket;
 
-  constructor(private socket: Socket, private authenticationService: AuthenticationService) { }
+  constructor(private authenticationService: AuthenticationService) { }
 
   ngOnInit(): void {
-    this.wolDevice.status = 'pending';
-
-    this.socket.on('statusUpdate', (data: any) => {
-      if (data._id === this.wolDevice._id) {
-        this.wolDevice.status = data.isAwake ? 'online' : 'offline';
+    this._socket.subscribe({
+      next: socket => {
+        if (socket !== null) {
+          this.socket = socket;
+          socket.on('statusUpdate', (data: any) => {
+            if (this.wolDevice._id === data._id) {
+              this.wolDevice.status = data.isAwake ? 'online' : 'offline';
+            }
+          });
+        }
       }
     });
 
-    this.socket.on('unauthorized', () => {
-      console.log('UNAUTHORIZED');
-      this.authenticationService.logout();
-    });
-
-    this.socket.emit('requestStatus', { token: this.authenticationService.currentUserValue, _id: this.wolDevice._id });
+    this.wolDevice.status = 'pending';
   }
 
   get statusCss(): string {
@@ -51,8 +57,22 @@ export class WolDeviceComponent implements OnInit {
     return this.wolDevice.status === 'offline';
   }
 
-  wakeWolDevice(): void {
+  async wakeWolDevice() {
     this.wolDevice.status = 'pending';
-    this.socket.emit('wakeWolDevice', { token: this.authenticationService.currentUserValue, _id: this.wolDevice._id });
+    this.socket.emit('wakeWolDevice', { _id: this.wolDevice._id });
+
+    for (let i = 0; i < environment.pollTries; i++) {
+      if (this.wolDevice.status !== 'pending') {
+        return;
+      }
+
+      await this.sleep(1000);
+    }
+
+    this.wolDevice.status = 'offline';
+  }
+
+  private sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 }

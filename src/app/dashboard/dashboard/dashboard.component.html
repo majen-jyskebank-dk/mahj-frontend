@@ -3,7 +3,7 @@
         <div class="card">
             <div class="card-body">
                 <div *ngFor="let wolDevice of wolDevices; index as i;" [ngClass]="{ 'mb-3': wolDevices.length - 1 != i }">
-                    <app-wol-device [wolDevice]="wolDevice" ></app-wol-device>
+                    <app-wol-device [wolDevice]="wolDevice" [_socket]="socket" ></app-wol-device>
                 </div>
             </div>
         </div>
