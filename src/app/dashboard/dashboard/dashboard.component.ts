@@ -13,28 +13,28 @@ import { Observable, BehaviorSubject } from 'rxjs';
 })
 export class DashboardComponent implements OnInit {
   private socketSubject: BehaviorSubject<Socket>;
-  socket: Observable<Socket>;
+  observableSocket: Observable<Socket>;
   wolDevices: WolDevice[];
 
   constructor(
-    // tslint:disable-next-line: variable-name
-    private _socket: Socket,
+    private socket: Socket,
     private wolDevicesService: WolDevicesService,
     private authenticationService: AuthenticationService
   ) {
     this.socketSubject = new BehaviorSubject(null);
-    this.socket = this.socketSubject.asObservable();
+    this.observableSocket = this.socketSubject.asObservable();
   }
 
   ngOnInit() {
-    this._socket.emit('authenticate', { token: this.authenticationService.currentUserValue });
+    this.socket.connect();
+    this.socket.emit('authenticate', { token: this.authenticationService.currentUserValue });
 
-    this._socket.on('connect', () => {
-      this._socket.on('authenticated', () => {
-        this.socketSubject.next(this._socket);
+    this.socket.on('connect', () => {
+      this.socket.on('authenticated', () => {
+        this.socketSubject.next(this.socket);
       });
 
-      this._socket.on('unauthorized', () => {
+      this.socket.on('unauthorized', () => {
         this.authenticationService.logout();
       });
     });

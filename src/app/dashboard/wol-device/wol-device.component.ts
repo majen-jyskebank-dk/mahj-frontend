@@ -1,9 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, OnChanges } from '@angular/core';
 import { WolDevice } from './wol-device.model';
 import { Socket } from 'ngx-socket-io';
 import { AuthenticationService } from 'src/app/authentication/authentication.service';
 import { Observable } from 'rxjs';
-import { promise } from 'protractor';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -11,16 +10,17 @@ import { environment } from 'src/environments/environment';
   templateUrl: './wol-device.component.html',
   styleUrls: ['./wol-device.component.css']
 })
-export class WolDeviceComponent implements OnInit {
+export class WolDeviceComponent implements OnInit, OnDestroy {
   @Input() wolDevice: WolDevice;
-  // tslint:disable-next-line: variable-name
-  @Input() _socket: Observable<Socket>;
+  @Input() observableSocket: Observable<Socket>;
   private socket: Socket;
 
   constructor(private authenticationService: AuthenticationService) { }
 
   ngOnInit(): void {
-    this._socket.subscribe({
+    this.wolDevice.status = 'pending';
+
+    this.observableSocket.subscribe({
       next: socket => {
         if (socket !== null) {
           this.socket = socket;
@@ -32,8 +32,12 @@ export class WolDeviceComponent implements OnInit {
         }
       }
     });
+  }
 
-    this.wolDevice.status = 'pending';
+  ngOnDestroy(): void {
+    if (this.socket) {
+      this.socket.disconnect();
+    }
   }
 
   get statusCss(): string {
