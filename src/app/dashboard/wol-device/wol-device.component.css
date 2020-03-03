@@ -1,15 +1,19 @@
-.status-sphere {
+.status-sphere, .dropdown .btn {
     height: 64px;
     width: 64px;
     border-radius: 32px;
     transition: background-color .15s ease-in-out;
 }
 
-.btn {
+.btn-group .btn {
     width: 64px;
     height: 64px;
 }
 
-.btn-secondary {
+.btn-group .btn-secondary {
     cursor: default;
+}
+
+.dropdown-menu {
+    min-width: 0;
 }

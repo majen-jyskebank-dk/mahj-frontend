@@ -12,7 +12,7 @@ export class WolDevice {
         this._id = _id;
         this.name = name;
         this.localIpAddress = localIpAddress;
-        this. icon = icon;
+        this.icon = icon;
         this.status = status;
         this.sshEnabled = sshEnabled;
     }

@@ -1,5 +1,5 @@
 <div class="card shadow-sm">
-    <div class="card-body d-flex align-items-center">
+    <div class="card-body d-flex align-items-center" *ngIf="!editable; else editView">
         <div class="mr-3 d-flex justify-content-center align-items-center status-sphere" [ngClass]="statusCss">
             <i class="material-icons text-white">{{ wolDevice.icon }}</i>
         </div>
@@ -11,6 +11,10 @@
 
         <div class="ml-auto">
             <div class="btn-group">
+                <button class="d-inline-flex justify-content-center btn shadow-sm btn-primary" (click)="canEdit = true">
+                    <i class="material-icons">edit</i>
+                </button>
+
                 <button *ngIf="wolDevice.sshEnabled" [disabled]="!isOnline" class="d-inline-flex justify-content-center btn shadow-sm" [ngClass]="(!isOnline) ? 'btn-secondary' : 'btn-dark'">
                     <i class="material-icons-outlined">call_to_action</i>
                 </button>
@@ -21,6 +25,40 @@
             </div>
         </div>
     </div>
+
+    <ng-template #editView>
+        <div class="card-body d-flex align-items-center">
+            <div class="dropdown dropright mr-3">
+                <button class="d-inline-flex justify-content-center btn btn-primary" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="material-icons text-white">{{ wolDevice.icon }}</i>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <button class="dropdown-item material-icons" [ngClass]="(wolDevice.icon === 'desktop_windows') ? 'active' : ''" (click)="icon = 'desktop_windows'">desktop_windows</button>
+                    <button class="dropdown-item material-icons" [ngClass]="(wolDevice.icon === 'storage') ? 'active' : ''" (click)="icon = 'storage'">storage</button>
+                    <button class="dropdown-item material-icons" [ngClass]="(wolDevice.icon === 'device_hub') ? 'active' : ''" (click)="icon = 'device_hub'">device_hub</button>
+                    <button class="dropdown-item material-icons" [ngClass]="(wolDevice.icon === 'videogame_asset') ? 'active' : ''" (click)="icon = 'videogame_asset'">videogame_asset</button>
+                    <button class="dropdown-item material-icons" [ngClass]="(wolDevice.icon === 'device_unknown') ? 'active' : ''" (click)="icon = 'device_unknown'">device_unknown</button>
+                </div>
+            </div>
+
+            <div class="d-flex flex-column">
+                <span class="font-weight-bold">{{ wolDevice.name }}</span>
+                <span>{{ wolDevice.localIpAddress }}</span>
+            </div>
+
+            <div class="ml-auto">
+                <div class="btn-group">
+                    <button class="d-inline-flex justify-content-center btn shadow-sm btn-success" (click)="canEdit = false">
+                        <i class="material-icons-outlined">check</i>
+                    </button>
+    
+                    <button class="d-inline-flex justify-content-center btn shadow-sm btn-danger">
+                        <i class="material-icons text-white">delete</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </ng-template>
 </div>
 
 <ng-template #spinner>

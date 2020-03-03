@@ -14,6 +14,7 @@ export class WolDeviceComponent implements OnInit, OnDestroy {
   @Input() wolDevice: WolDevice;
   @Input() observableSocket: Observable<Socket>;
   private socket: Socket;
+  editable = false;
 
   constructor(private authenticationService: AuthenticationService) { }
 
@@ -47,6 +48,14 @@ export class WolDeviceComponent implements OnInit, OnDestroy {
       case 'offline': return 'bg-danger';
       default: return 'bg-secondary';
     }
+  }
+
+  set icon(value: string) {
+    this.wolDevice.icon = value;
+  }
+
+  set canEdit(value: boolean) {
+    this.editable = value;
   }
 
   get isOnline(): boolean {
