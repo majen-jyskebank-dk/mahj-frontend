@@ -1,9 +1,9 @@
-import { Component, OnInit, Input, OnDestroy, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { WolDevice } from './wol-device.model';
 import { Socket } from 'ngx-socket-io';
-import { AuthenticationService } from 'src/app/authentication/authentication.service';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-wol-device',
@@ -14,12 +14,21 @@ export class WolDeviceComponent implements OnInit, OnDestroy {
   @Input() wolDevice: WolDevice;
   @Input() observableSocket: Observable<Socket>;
   private socket: Socket;
+
+  editForm: FormGroup;
   editable = false;
 
-  constructor(private authenticationService: AuthenticationService) { }
+  constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
     this.wolDevice.status = 'pending';
+
+    this.editForm = this.formBuilder.group({
+      name: [this.wolDevice.name || '', Validators.required],
+      macAddress: [this.wolDevice.macAddress || '', Validators.required],
+      localIpAddress: [this.wolDevice.localIpAddress || '', Validators.required],
+      sshEnabled: [this.wolDevice.sshEnabled || false, Validators.required]
+    });
 
     this.observableSocket.subscribe({
       next: socket => {
@@ -68,6 +77,23 @@ export class WolDeviceComponent implements OnInit, OnDestroy {
 
   get isOffline(): boolean {
     return this.wolDevice.status === 'offline';
+  }
+
+  get f() {
+    return this.editForm.controls;
+  }
+
+  onSubmit() {
+    if (this.editForm.invalid) {
+      return;
+    }
+
+    this.wolDevice.name = this.f.name.value;
+    this.wolDevice.localIpAddress = this.f.localIpAddress.value;
+    this.wolDevice.macAddress = this.f.macAddress.value;
+    this.wolDevice.sshEnabled = this.f.sshEnabled.value;
+
+    this.editable = false;
   }
 
   async wakeWolDevice() {

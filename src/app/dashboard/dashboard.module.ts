@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { WolDeviceComponent } from './wol-device/wol-device.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
 const config: SocketIoConfig = {
@@ -17,6 +18,8 @@ const config: SocketIoConfig = {
   imports: [
     CommonModule,
     SocketIoModule.forRoot(config),
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class DashboardModule { }
