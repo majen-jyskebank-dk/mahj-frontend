@@ -48,5 +48,11 @@ export class DashboardComponent implements OnInit {
       );
   }
 
-  wakeWolDevice(id: string) { }
+  createWolDevice() {
+    this.wolDevices.push(new WolDevice());
+  }
+
+  deleteWolDevice(index: number) {
+    delete this.wolDevices[index];
+  }
 }

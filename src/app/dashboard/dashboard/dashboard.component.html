@@ -1,10 +1,12 @@
-<div class="row mt-5">
+<div class="row mt-5 mb-5">
     <div class="col">
         <div class="card">
             <div class="card-body">
-                <div *ngFor="let wolDevice of wolDevices; index as i;" [ngClass]="{ 'mb-3': wolDevices.length - 1 != i }">
-                    <app-wol-device [wolDevice]="wolDevice" [observableSocket]="observableSocket" ></app-wol-device>
+                <div *ngFor="let wolDevice of wolDevices; index as i;">
+                    <app-wol-device *ngIf="wolDevice" [wolDevice]="wolDevice" [index]="i" [observableSocket]="observableSocket" (requestDelete)="deleteWolDevice($event)" ></app-wol-device>
                 </div>
+
+                <button class="btn btn-primary btn-block shadow-sm" (click)="createWolDevice()">Add new</button>
             </div>
         </div>
     </div>

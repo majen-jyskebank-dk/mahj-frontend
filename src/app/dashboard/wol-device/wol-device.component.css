@@ -10,7 +10,7 @@
     height: 64px;
 }
 
-.btn-group .btn-secondary {
+:disabled {
     cursor: default;
 }
 

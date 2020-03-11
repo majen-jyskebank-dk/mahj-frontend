@@ -1,6 +1,6 @@
-<div class="card shadow-sm">
+<div class="card shadow-sm mb-3">
     <div class="card-body d-flex align-items-center" *ngIf="!editable; else editView">
-        <div class="mr-3 d-flex justify-content-center align-items-center status-sphere" [ngClass]="statusCss">
+        <div class="mr-3 d-flex justify-content-center align-items-center status-sphere shadow-sm" [ngClass]="statusCss">
             <i class="material-icons text-white">{{ wolDevice.icon }}</i>
         </div>
 
@@ -11,16 +11,15 @@
 
         <div class="ml-auto">
             <div class="btn-group">
-                <button class="d-inline-flex justify-content-center btn shadow-sm btn-primary" (click)="canEdit = true">
+                <button class="d-inline-flex justify-content-center btn btn-primary" (click)="canEdit = true">
                     <i class="material-icons">edit</i>
                 </button>
-
-                <button *ngIf="wolDevice.sshEnabled" [disabled]="!isOnline" class="d-inline-flex justify-content-center btn shadow-sm" [ngClass]="(!isOnline) ? 'btn-secondary' : 'btn-dark'">
+                <a *ngIf="wolDevice.externalIpAddress" [href]="sanitizedUrl" class="d-flex justify-content-center align-items-center btn shadow-sm" [ngClass]="{ 'btn-secondary disabled' : !isOnline, 'btn-dark': isOnline }">
                     <i class="material-icons-outlined">call_to_action</i>
-                </button>
+                </a>
 
-                <button [disabled]="isOnline || isPending" class="d-inline-flex justify-content-center btn shadow-sm" [ngClass]="(isOffline) ? 'btn-primary' : 'btn-secondary'" (click)="wakeWolDevice()">
-                    <i *ngIf="isOffline || isOnline; else spinner" class="material-icons">power_settings_new</i>
+                <button [disabled]="!isOffline" class="d-inline-flex justify-content-center btn shadow-sm" [ngClass]="(isOffline) ? 'btn-primary' : 'btn-secondary'" (click)="wakeWolDevice()">
+                    <i *ngIf="!isPending; else spinner" class="material-icons">power_settings_new</i>
                 </button>
             </div>
         </div>
@@ -46,23 +45,19 @@
                     <input class="form-control form-control-sm mb-1" formControlName="name" name="name" placeholder="Device name"/>
                     <div class="input-group input-group-sm">
                         <input class="form-control" formControlName="localIpAddress" name="localIpAddress" placeholder="Local IP address"/>
+                        <input class="form-control" formControlName="externalIpAddress" name="externalIpAddress" placeholder="External IP address"/>
                         <input class="form-control" formControlName="macAddress" name="macAddress" placeholder="MAC address"/>
                     </div>
-                </div>
-
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="sshEnabled" name="sshEnabled" formControlName="sshEnabled">
-                    <label for="sshEnabled" class="custom-control-label">SSH enabled</label>
                 </div>
             
 
                 <div class="ml-auto">
                     <div class="btn-group">
-                        <button type="submit" class="d-inline-flex justify-content-center btn shadow-sm btn-success">
-                            <i class="material-icons-outlined">check</i>
+                        <button type="submit" class="d-inline-flex justify-content-center btn shadow-sm btn-success" [disabled]="updateSubmitted" >
+                            <i *ngIf="!updateSubmitted; else spinner" class="material-icons-outlined">check</i>
                         </button>
 
-                        <button class="d-inline-flex justify-content-center btn shadow-sm btn-danger">
+                        <button type="button" class="d-inline-flex justify-content-center btn shadow-sm btn-danger" [disabled]="updateSubmitted" (click)="onDelete()">
                             <i class="material-icons text-white">delete</i>
                         </button>
                     </div>
