@@ -5,5 +5,6 @@ export const environment = {
   appBrand: 'MAHJ',
   backendUrl: 'http://localhost:4300',
   apiPath: 'api',
+  socketPath: 'socket',
   pollTries: 25
 };
